@@ -37,3 +37,23 @@ SmartFarmingIOT/
 ├── package-lock.json         # Locked versions of dependencies
 └── README.md                 # Project documentation
 ```
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js and npm installed
+- PostgreSQL installed and running
+- 
+### Database Setup
+
+### Install Dependencies
+```bash
+npm install
+```
+
+### Running the application
+```bash
+node server.js
+```
+
+
