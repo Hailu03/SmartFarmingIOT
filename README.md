@@ -43,7 +43,6 @@ SmartFarmingIOT/
 ### Prerequisites
 - Node.js and npm installed
 - PostgreSQL installed and running
-- 
 ### Database Setup
 
 ### Install Dependencies
