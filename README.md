@@ -52,7 +52,7 @@ npm install
 
 ### Running the application
 ```bash
-node server.js
+node WebServer.js
 ```
 
 
