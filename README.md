@@ -1,9 +1,9 @@
 # Members:
 - Le Thanh Hai (Project Management)
-- Trinh The Hao (Backend Developer)
+- Trinh The Hao (Backend Development)
 - Pham Minh Hieu (Restful API + MQTT)
-- Vu Ngoc Quang (Frontend Developer)
-- Nguyen Hoang Khoi (Frontend Developer)
+- Vu Ngoc Quang (Frontend Development)
+- Nguyen Hoang Khoi (Frontend Development)
 
 # Smart Farming IoT
 
