@@ -36,7 +36,4 @@ SmartFarmingIOT/
 ├── package.json              # Node.js project metadata and dependencies
 ├── package-lock.json         # Locked versions of dependencies
 └── README.md                 # Project documentation
-
-
-
-
+```
