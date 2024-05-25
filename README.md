@@ -53,6 +53,8 @@ npm install
 ### Running the application
 ```bash
 node WebServer.js
+node sensors.js
+node devices.js
 ```
 
 
