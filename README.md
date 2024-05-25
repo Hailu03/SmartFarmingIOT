@@ -1,7 +1,7 @@
 # Members:
 - Le Thanh Hai (Project Management)
 - Trinh The Hao (Backend Development)
-- Pham Minh Hieu (Restful API + MQTT)
+- Pham Minh Hieu (Restful API + MQTT + Device Communication)
 - Vu Ngoc Quang (Frontend Development)
 - Nguyen Hoang Khoi (Frontend Development)
 
