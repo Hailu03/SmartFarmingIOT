@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 var mqtt = require('mqtt')
 const path = require('path');
 
+
 var client = mqtt.connect('mqtt://test.mosquitto.org')
 var topic = 'SmartFarmingProject-SGVT'
 
