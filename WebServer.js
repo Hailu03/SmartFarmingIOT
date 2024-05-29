@@ -22,6 +22,7 @@ app.set('view engine', 'ejs');
 // Route to handle incoming sensor data
 app.post('/api/data', (req, res) => {
   sensorData = req.body; // Store the received sensor data
+  
   if(sensorData.temperature > 30){
     client.publish(topic,'Turn on the fan')
   }

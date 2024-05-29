@@ -1,7 +1,7 @@
 $(document).ready(function() {
     // Function to fetch data from the server
     function fetchData() {
-        $.get('/api/sensor-data', function(data) {
+        $.get('/api/sensor-data/:1', function(data) {
             // Update the content of the page with the fetched data
             $('#temperature').text(data.temperature || 'N/A');
             $('#airHumidity').text(data.airHumidity || 'N/A');

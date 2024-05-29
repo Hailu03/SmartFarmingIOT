@@ -8,7 +8,6 @@ client.on('connect', function() {
 })
 
 client.on('message', function (topic, message) {
-    console.log(message.toString());
     if(message.toString() === 'Turn on the fan'){
         console.log('Turning on the fan')
     }

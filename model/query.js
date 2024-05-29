@@ -3,8 +3,8 @@ const { Client } = require('pg');
 const credentials = {
     user: "postgres",
     host: "localhost",
-    database: "",
-    password: "",
+    database: "SmartFarm",
+    password: "Hailuke!21092003",
     port: 5432
 };
 
@@ -26,7 +26,7 @@ const insertSensor = async (timestamp, temperature, luminosity, airHumidity, soi
     try {
         await client.connect();
         await client.query(
-            "INSERT INTO sensor (timestamp, temperature, luminosity, air_humidity, soil_humidity) VALUES($1,$2,$3,$4,$5)",
+            "INSERT INTO sensor (SensorDataID, FarmID, timestamp, temperature, luminosity, air_humidity, soil_humidity) VALUES($1,$2,$3,$4,$5)",
             [timestamp, temperature, luminosity, airHumidity, soilHumidity]
         );
         return true;
