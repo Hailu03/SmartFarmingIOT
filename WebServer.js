@@ -72,6 +72,19 @@ app.get(`/sensorData`, (req, res) => {
   res.json(sensorData);
 })
 
+//Route for publishing mqtt message
+app.post('/publish', (req, res) => {
+  const { message } = req.body;
+  if (message) {
+    client.publish(topic, message, () => {
+      console.log('Message published:', message);
+      res.send('Message published successfully');
+    });
+  } else {
+    res.status(400).send('Message is required');
+  }
+});
+
 app.listen(port, () => {
   console.log(`SERVER IS OPEN ON PORT ${port}`);
 })
