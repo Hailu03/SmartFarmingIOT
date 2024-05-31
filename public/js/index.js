@@ -3,6 +3,7 @@ $(document).ready(function() {
     function fetchData() {
         $.get('/api/sensor-data', function(data) {
             // Update the content of the page with the fetched data
+            
             $('#temperature').text(data.temperature || 'N/A');
             $('#airHumidity').text(data.airHumidity || 'N/A');
             $('#soilHumidity').text(data.soilHumidity || 'N/A');
