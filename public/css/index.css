@@ -1,0 +1,58 @@
+html, body {
+    margin: 30px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+.control-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.control-frame {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 10px;
+    width: 30%; /* Adjust to 30% for three frames per row */
+    text-align: center;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+.control-frame h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #4CAF50;
+}
+
+.control-frame p {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.control-frame span {
+    font-weight: bold;
+}
+
+.control-frame img,
+.control-frame svg {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+}

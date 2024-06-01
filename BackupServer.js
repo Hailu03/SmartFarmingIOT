@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 // var topic = 'SmartFarmingProject-SGVT'
 
 const app = express();
-const port = 5000;
+const port = 5001;
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -17,9 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 const APIrouter = require('./routes/API.js');
-const Viewrouter = require('./routes/View.js');
 app.use('/api', APIrouter);
-app.use('/', Viewrouter);
 
 
 app.listen(port, () => {

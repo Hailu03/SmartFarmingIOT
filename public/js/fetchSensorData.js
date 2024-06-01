@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    document.getElementById('timestamp').textContent = new Date().toISOString().split('T')[0] + ' ' + new Date().toISOString().split('T')[1].split('.')[0];
 
     async function updateSensorData(farmId) {
         try {
-            const response = await fetch(`http://localhost:5000/sensorData`);
-            
+            const response = await fetch(`http://localhost:5000/api/sensorData`);
             const data = await response.json();
-            console.log(data);
+
             if(data.FarmID == farmId){
                 document.getElementById('temperature').textContent = data.Temperature;
                 document.getElementById('airHumidity').textContent = data.AirHumidity;
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setInterval(() => {
         updateSensorData(farmSelectElement.value);
-    }, 5000);
+    }, 500);
 });
 
 
