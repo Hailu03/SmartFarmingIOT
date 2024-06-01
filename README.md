@@ -27,6 +27,8 @@ SmartFarmingIOT/
 │   ├── css/
 │   ├── js/
 │       └── index.js          # JavaScript for fetching and displaying sensor data
+├──Routes
+|   
 ├── views/
 │   └── index.ejs             # EJS template for the web interface
 ├── WebServer.js              # Main server file with Express setup and routes
