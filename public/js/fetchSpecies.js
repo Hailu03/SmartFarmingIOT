@@ -7,7 +7,7 @@ $(document).ready(function() {
             document.getElementById('speices').textContent = data[0].Name;
             fetchGrowthPeriods(data[0].SpeciesID);
         } catch (error) {
-            throw new Error(`Error fetching species data: ${error.message}`);
+            console.log(`Error fetching species: ${error.message}`);
         }
     }
 

@@ -1,8 +1,71 @@
 const express = require('express');
 const router = express.Router();
-const { insertSensor,queryDb, fetchGrowthPeriods,fetchSpecies } = require('../model/query.js');
+const { insertSensor,queryDb, fetchGrowthPeriods,fetchSpecies,queryFarmID,retrieveOptimalValue } = require('../model/query.js');
 
 let sensorData = {};
+
+// MQTT setup
+const mqtt = require('mqtt');
+const client = mqtt.connect('mqtt://test.mosquitto.org');
+const topic = 'SmartFarmingProject-SGVT';
+
+//function to make comparisons and send mqtt messages
+async function processSensorData(FarmID, sensorData) {
+    const { Temperature, AirHumidity, SoilHumidity, Luminosity, PHLevel, WindSpeed } = sensorData;
+  
+    try {
+        // Retrieve the species for the given farm
+        const speciesResult = await queryFarmID(FarmID);
+        const SpeciesID = speciesResult[0].SpeciesID;
+  
+        // Retrieve the optimal values from the knowledge base
+        const optimalValues = await retrieveOptimalValue(SpeciesID);
+    
+        // Compare sensor data with optimal values and send MQTT messages
+        optimalValues.forEach(optimalValue => {
+            const { ParameterName, MinValue, MaxValue } = optimalValue;
+            let actionMessage = '';
+  
+        switch (ParameterName) {
+          case 'Luminosity':
+            if (Luminosity < MinValue) actionMessage = 'Turn on the light';
+            else if (Luminosity > MaxValue) actionMessage = 'Turn off the light';
+            break;
+          case 'Temperature':
+            if (Temperature < MinValue) actionMessage = 'Turn off the fan or air conditioner';
+            else if (Temperature > MaxValue) actionMessage = 'Turn on the fan or air conditioner';
+            break;
+          case 'SoilHumidity':
+            if (SoilHumidity < MinValue) actionMessage = 'Turn on the water pump';
+            else if (SoilHumidity > MaxValue) actionMessage = 'Turn off the water pump';
+            break;
+          case 'AirHumidity':
+            if (AirHumidity < MinValue) actionMessage = 'Activate humidifier';
+            else if (AirHumidity > MaxValue) actionMessage = 'Activate dehumidifier';
+            break;
+          case 'PHLevel':
+            if (PHLevel < MinValue) actionMessage = 'Add alkaline solution';
+            else if (PHLevel > MaxValue) actionMessage = 'Add acidic solution';
+            break;
+          case 'WindSpeed':
+            if (WindSpeed > MaxValue) actionMessage = 'Activate wind barriers or reduce ventilation';
+            else actionMessage = 'Deactivate wind barriers or increase ventilation';
+            break;
+          default:
+            break;
+        }
+  
+        if (actionMessage) {
+          client.publish(topic, actionMessage, () => {
+            console.log('Published message:', actionMessage);
+          });
+        }
+      });
+  
+    } catch (error) {
+      console.error('Error processing sensor data:', error);
+    }
+  }
 
 // Route to handle incoming sensor data
 router.post('/data', async (req, res) => {
@@ -12,6 +75,7 @@ router.post('/data', async (req, res) => {
   
     try {
       const result = await insertSensor(FarmID, timestamp, AirHumidity, SoilHumidity, Luminosity, PHLevel, Temperature, WindSpeed);
+      await processSensorData(FarmID, sensorData);
       if (result) {
           console.log('Data inserted successfully');
           res.status(200).send('Data inserted successfully');
@@ -25,6 +89,7 @@ router.post('/data', async (req, res) => {
   
     console.log('Received data:', sensorData);
   });
+  
 
 // Route to provide sensor data as JSON
 router.get('/sensorData', (req, res) => {

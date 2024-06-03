@@ -11,9 +11,9 @@ function generateRandomSensorData() {
     Temperature: getRandomInt(20, 40),      // Random temperature between 20°C and 40°C
     AirHumidity: getRandomInt(40, 60),      // Random air humidity between 40% and 60%
     SoilHumidity: getRandomInt(0, 100),     // Random soil humidity between 0% and 100%
-    Luminosity: getRandomInt(0, 1000),      // Random luminosity between 0 and 1000 lux
+    Luminosity: getRandomInt(0, 2100),      // Random luminosity between 0 and 1000 lux
     PHLevel: getRandomFloat(4, 8),          // Random pH level between 4 and 8
-    WindSpeed: getRandomFloat(0, 10)        // Random wind speed/direction between 0 and 10 (m/s)
+    WindSpeed: getRandomFloat(0, 20)        // Random wind speed/direction between 0 and 10 (m/s)
   };
 }
 
@@ -25,8 +25,7 @@ function getRandomFloat(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-async function sendSensorData() {
-  const data = generateRandomSensorData();
+async function sendSensorData(data, retries = 0) {
   console.log("Sending data:", data);
   try {
     await axios.post(PRIMARY_WEB_SERVER_URL, data, {

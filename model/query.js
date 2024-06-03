@@ -67,10 +67,40 @@ const fetchGrowthPeriods = async (speciesId) => {
     }
 };
 
+const queryFarmID = async (FarmID) => {
+    const client = await pool.connect();
+    try {
+        const query = `SELECT "SpeciesID" FROM "FarmSpecies" WHERE "FarmID" = $1`;
+        const result = await client.query(query, [FarmID]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching farm:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
+const retrieveOptimalValue = async (speciesID) => {
+    const client = await pool.connect();
+    try {
+        const query = `SELECT "ParameterName", "MinValue", "MaxValue" FROM "KnowledgeBase" WHERE "SpeciesID" = $1`;
+        const result = await client.query(query, [speciesID]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching optimal values:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
 
 module.exports = {
     insertSensor,
     queryDb,
     fetchSpecies,
-    fetchGrowthPeriods
+    fetchGrowthPeriods,
+    queryFarmID,
+    retrieveOptimalValue
 };

@@ -26,7 +26,6 @@ function getRandomFloat(min, max) {
 }
 
 async function sendSensorData(data, retries = 0) {
-  const data = generateRandomSensorData();
   console.log("Sending data:", data);
   try {
     await axios.post(PRIMARY_WEB_SERVER_URL, data, {

@@ -1,67 +1,68 @@
+
 $(document).ready(function() {
-    const minValues = {
-        luminosity: 100, // example values
-        temperature: 18,
-        soilHumidity: 30,
-        airHumidity: 40,
-        pHLevel: 6,
-        windSpeed: 5
-    };
+    const client = mqtt.connect('wss://test.mosquitto.org:8081');
+    const topic = 'SmartFarmingProject-SGVT';
 
-    const maxValues = {
-        luminosity: 300, // example values
-        temperature: 25,
-        soilHumidity: 60,
-        airHumidity: 70,
-        pHLevel: 7.5,
-        windSpeed: 20
-    };
+    client.on('connect', () => {
+        console.log('Connected to MQTT broker');
+        client.subscribe(topic, (err) => {
+            if (!err) {
+                console.log(`Subscribed to topic: ${topic}`);
+            } else {
+                console.error('Failed to subscribe:', err);
+            }
+        });
+    });
 
-    function updateControlFrame(sensorType, value) {
-        let action = 'Normal';
-        if (value < minValues[sensorType]) {
-            console.log(sensorType, value,minValues[sensorType]);
-            if (sensorType == 'luminosity') action = 'Turn on the light';
-            if (sensorType == 'temperature') action = 'Turn off the fan or air conditioner';
-            if (sensorType == 'soilHumidity') action = 'Turn on the water pump';
-            if (sensorType == 'airHumidity') action = 'Activate humidifier';
-            if (sensorType == 'pHLevel') action = 'Add alkaline solution';
-        } else if (value > maxValues[sensorType]) {
-            if (sensorType == 'luminosity') action = 'Turn off the light';
-            if (sensorType == 'temperature') action = 'Turn on the fan or air conditioner';
-            if (sensorType == 'soilHumidity') action = 'Turn off the water pump';
-            if (sensorType == 'airHumidity') action = 'Activate dehumidifier';
-            if (sensorType == 'pHLevel') action = 'Add acidic solution';
-            if (sensorType == 'windSpeed') action = 'Activate wind barriers or reduce ventilation';
-        } 
-        
-        $(`#${sensorType}Value`).text(value);
+    client.on('message', (topic, message) => {
+        console.log(`Received message on ${topic}: ${message}`)
+        const msg = message.toString();
+        let sensorType = '';
+        let action = msg;
+
+        switch (msg) {
+            case 'Turn on the light':
+            case 'Turn off the light':
+                sensorType = 'luminosity';
+                break;
+            case 'Turn off the fan or air conditioner':
+            case 'Turn on the fan or air conditioner':
+                sensorType = 'temperature';
+                break;
+            case 'Turn on the water pump':
+            case 'Turn off the water pump':
+                sensorType = 'soilHumidity';
+                break;
+            case 'Activate humidifier':
+            case 'Activate dehumidifier':
+                sensorType = 'airHumidity';
+                break;
+            case 'Add alkaline solution':
+            case 'Add acidic solution':
+                sensorType = 'pHLevel';
+                break;
+            case 'Activate wind barriers or reduce ventilation':
+            case 'Deactivate wind barriers or increase ventilation':
+                sensorType = 'windSpeed';
+                break;
+            default:
+                console.log('Unknown action:', message);
+                return; // Exit the function if the message is not recognized
+        }
+
+        // Update the corresponding value and action elements
+        $(`#${sensorType}Value`).text(action);
         $(`#${sensorType}Action`).text(action);
-    }
+    });
 
-    // Example function to fetch sensor data, you would replace this with actual data fetching logic
-    function fetchSensorData() {
-        return {
-            luminosity: 90, // example values
-            temperature: 22,
-            soilHumidity: 45,
-            airHumidity: 55,
-            pHLevel: 7,
-            windSpeed: 10
-        };
-    }
+    // Handle errors
+    client.on('error', (err) => {
+        console.error('MQTT Error:', err);
+        client.end();
+    });
 
-    // Update the control frames initially and then periodically
-    function updateControlFrames() {
-        const sensorData = fetchSensorData();
-        updateControlFrame('luminosity', sensorData.luminosity);
-        updateControlFrame('temperature', sensorData.temperature);
-        updateControlFrame('soilHumidity', sensorData.soilHumidity);
-        updateControlFrame('airHumidity', sensorData.airHumidity);
-        updateControlFrame('pHLevel', sensorData.pHLevel);
-        updateControlFrame('windSpeed', sensorData.windSpeed);
-    }
-
-    updateControlFrames();
-    setInterval(updateControlFrames, 5000); // Update every 5 seconds
+    // Handle connection close
+    client.on('close', () => {
+        console.log('MQTT connection closed');
+    });
 });
