@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Function to fetch growth periods
     async function fetchGrowthPeriods(speciesID) {
         try {
-            const response = await fetch(`http://localhost:5000/api/growthPeriods?speciesID=${speciesID}`);
+            const response = await fetch(`http://localhost:3002/api/growthPeriods?speciesID=${speciesID}`);
             const data = await response.json();
             const periodSelect = document.getElementById('periodSelect');
             periodSelect.innerHTML = ''; // Clear existing options

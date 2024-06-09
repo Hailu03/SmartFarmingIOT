@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Function to fetch species data
     async function fetchSpecies(farmID) {
         try {
-            response = await fetch(`http://localhost:5000/api/species?farmID=${farmID}`);
+            response = await fetch(`http://localhost:3002/api/species?farmID=${farmID}`);
             const data = await response.json();
             document.getElementById('speices').textContent = data[0].Name;
             fetchGrowthPeriods(data[0].SpeciesID);
@@ -13,7 +13,7 @@ $(document).ready(function() {
 
     async function fetchGrowthPeriods(speciesID) {
         try {
-            const response = await fetch(`http://localhost:5000/api/growthPeriods?speciesID=${speciesID}`);
+            const response = await fetch(`http://localhost:3002/api/growthPeriods?speciesID=${speciesID}`);
             const data = await response.json();
             const periodSelect = document.getElementById('periodSelect');
             periodSelect.innerHTML = ''; // Clear existing options
