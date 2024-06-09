@@ -1,9 +1,6 @@
 const axios = require('axios');
 
-const PRIMARY_WEB_SERVER_URL = "http://localhost:5000/api/data"; // Primary server URL
-const BACKUP_WEB_SERVER_URL = "http://localhost:5001/api/data"; // Backup server URL
-const MAX_RETRIES = 5; // Maximum number of retries
-const RETRY_INTERVAL = 3000; // Retry interval in milliseconds (3 seconds)
+const WEB_SERVER_URL = "http://localhost:5000/api/data"; // Primary server URL
 
 function generateRandomSensorData() {
   return {

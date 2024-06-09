@@ -6,7 +6,7 @@ $(document).ready(function () {
     // Function to fetch sensor data from the server
     async function fetchSensorData(column) {
         try {
-            const response = await fetch(`http://localhost:5000/api/getall?column=${column}&farmId=${farmId}`);
+            const response = await fetch(`http://localhost:3002/api/getall?column=${column}&farmId=${farmId}`);
             const data = await response.json();
             return data;
         } catch (error) {

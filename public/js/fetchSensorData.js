@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function updateSensorData(farmId) {
         try {
-            const response = await fetch(`http://localhost:5000/api/sensorData`);
+            const response = await fetch(`http://localhost:3000/api/data`);
             const data = await response.json();
 
             if(data.FarmID == farmId){
