@@ -71,10 +71,29 @@ async function processSensorData(FarmID, sensorData) {
 router.post('/data', async (req, res) => {
     sensorData = req.body;
     const { FarmID, Temperature, AirHumidity, SoilHumidity, Luminosity, PHLevel, WindSpeed } = sensorData;
-    const timestamp = new Date().toISOString();
+
+    const vietnamTimeZone = 'Asia/Ho_Chi_Minh';
+
+    // Get the current timestamp
+    const currentTimeStamp = new Date();
+
+    // Get the options for formatting the time
+    const formattedTimeStamp = currentTimeStamp.toLocaleString('en-US', {
+        timeZone: vietnamTimeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).replace(/\//g, '-'); // Replace slashes with dashes for consistency
+
+    // Format the timestamp to display in Vietnam time
+    const vietnamTimeNow = currentTimeStamp.toLocaleString('en-US', formattedTimeStamp);
+    console.log(vietnamTimeNow)
   
     try {
-      const result = await insertSensor(FarmID, timestamp, AirHumidity, SoilHumidity, Luminosity, PHLevel, Temperature, WindSpeed);
+      const result = await insertSensor(FarmID, vietnamTimeNow, AirHumidity, SoilHumidity, Luminosity, PHLevel, Temperature, WindSpeed);
       await processSensorData(FarmID, sensorData);
       if (result) {
           console.log('Data inserted successfully');
@@ -98,15 +117,14 @@ router.get('/sensorData', (req, res) => {
 
 // Route to handle sensor data query
 router.get('/getall', async (req, res) => {
-const { column, farmId } = req.query; // Extract column and value from query parameters
-try {
-    // console.log(column,FarmId);
-    data = await queryDb(column,farmId); // Call the query function with provided column and value
-    res.json(data);
-} catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).send('Server error');
-}
+  const { farmId } = req.query;
+  try {
+      const data = await queryDb(farmId);
+      res.json(data);
+  } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).send('Server error');
+  }
 });
 
 router.get('/species', async (req, res) => {

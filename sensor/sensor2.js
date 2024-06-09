@@ -1,9 +1,6 @@
 const axios = require('axios');
 
-const PRIMARY_WEB_SERVER_URL = "http://localhost:5000/api/data"; // Primary server URL
-const BACKUP_WEB_SERVER_URL = "http://localhost:5001/api/data"; // Backup server URL
-const MAX_RETRIES = 5; // Maximum number of retries
-const RETRY_INTERVAL = 3000; // Retry interval in milliseconds (3 seconds)
+const WEB_SERVER_URL = "http://localhost:3002/api/data"; // Primary server URL
 
 function generateRandomSensorData() {
   return {
@@ -25,33 +22,17 @@ function getRandomFloat(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-async function sendSensorData(data, retries = 0) {
+async function sendSensorData(data) {
   console.log("Sending data:", data);
   try {
-    await axios.post(PRIMARY_WEB_SERVER_URL, data, {
+    await axios.post(WEB_SERVER_URL, data, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    console.log("Data sent to primary server successfully");
-  } catch (primaryError) {
-    console.error("Error sending data to primary server:", primaryError);
-    try {
-      await axios.post(BACKUP_WEB_SERVER_URL, data, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log("Data sent to backup server successfully");
-    } catch (backupError) {
-      console.error("Error sending data to backup server:", backupError);
-      if (retries < MAX_RETRIES) {
-        console.log(`Retrying in ${RETRY_INTERVAL / 1000} seconds... (Attempt ${retries + 1}/${MAX_RETRIES})`);
-        setTimeout(() => sendSensorData(data, retries + 1), RETRY_INTERVAL);
-      } else {
-        console.error("Failed to send data after maximum retries");
-      }
-    }
+    console.log("Data sent to server successfully");
+  } catch (error) {
+    console.error("Error sending data to server:", error);
   }
 }
 

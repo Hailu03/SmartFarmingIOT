@@ -1,5 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('timestamp').textContent = new Date().toISOString().split('T')[0] + ' ' + new Date().toISOString().split('T')[1].split('.')[0];
+    const vietnamTimeZone = 'Asia/Ho_Chi_Minh';
+
+    // Get the current timestamp
+    const currentTimeStamp = new Date();
+
+    // Get the options for formatting the time
+    const formattedTimeStamp = currentTimeStamp.toLocaleString('en-US', {
+        timeZone: vietnamTimeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).replace(/\//g, '-'); // Replace slashes with dashes for consistency
+
+    // Format the timestamp to display in Vietnam time
+    const vietnamTimeNow = currentTimeStamp.toLocaleString('en-US', formattedTimeStamp);
+
+    document.getElementById('timestamp').textContent = vietnamTimeNow.replace(',', '');
 
     async function updateSensorData(farmId) {
         try {

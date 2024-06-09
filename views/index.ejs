@@ -8,6 +8,7 @@
     <script src="js/fetchSpecies.js"></script> <!-- Include the external JavaScript file -->
     <script src="js/knowledgebase.js"></script> <!-- Include the external JavaScript file -->
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
@@ -109,14 +110,6 @@
     </div>
 
     <div>
-        <select name="sensorType" id="sensorTypeSelect">
-            <option value="Temperature">Temperature</option>
-            <option value="Luminosity">Luminosity</option>
-            <option value="AirHumidity">Air Humidity</option>
-            <option value="SoilHumidity">Soil Humidity</option>
-            <option value="PHLevel">pH Level</option>
-            <option value="WindSpeed">Wind Speed</option>
-        </select>
         <canvas id="sensorChart" width="400" height="100"></canvas> <!-- Canvas for the chart -->
     </div>
     

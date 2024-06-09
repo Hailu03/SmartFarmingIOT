@@ -24,17 +24,19 @@ const insertSensor = async (FarmID, timestamp, AirHumidity, SoilHumidity, Lumino
     }
 };
 
-const queryDb = async (column,FarmId) => {
-    const client = await pool.connect(); 
+const queryDb = async (FarmId) => {
+    const client = await pool.connect();
     try {
-        const query = `SELECT "${column}" FROM "SensorData" WHERE "FarmID" = ${FarmId}`; // Modify the query to select specific columns
-        const res = await client.query(query);
-        await client.end();
+        const query = `SELECT "Timestamp", "AirHumidity", "SoilHumidity", "Luminosity", "PHLevel", "Temperature", "WindSpeed" FROM "SensorData" WHERE "FarmID" = $1`;
+        const res = await client.query(query, [FarmId]);
         return res.rows;
     } catch (error) {
-        console.error(error);
+        console.error('Error executing query:', error);
+        throw error;
+    } finally {
+        client.release();
     }
-}
+};
 
 // Function to fetch species data from the database
 const fetchSpecies = async (farmID) => {
