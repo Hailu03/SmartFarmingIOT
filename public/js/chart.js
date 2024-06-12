@@ -17,10 +17,10 @@ $(document).ready(function () {
 
     // Function to update the chart with multiple datasets
     function updateChart(data) {
-        if (sensorChart) {
-            sensorChart.destroy();
-            sensorChart = null; // Ensure the chart instance is set to null
-        }
+        // if (sensorChart) {
+        //     sensorChart.destroy();
+        //     sensorChart = null; // Ensure the chart instance is set to null
+        // }
 
 
         const slicedData = data.slice(-10); // Slice the data array to include only the last 40 elements
@@ -74,31 +74,39 @@ $(document).ready(function () {
 
         console.log(labels);
 
-        sensorChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'second'
+        if (sensorChart) {
+            sensorChart.data.labels = labels;
+            sensorChart.data.datasets.forEach((dataset, index) => {
+                dataset.data = datasets[index].data;
+            });
+            sensorChart.update();
+        } else {
+            sensorChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'second'
+                            },
+                            ticks: {
+                                stepSize: 5
+                            }
                         },
-                        ticks: {
-                            stepSize: 1
+                        y: {
+                            beginAtZero: true
                         }
-                    },
-                    y: {
-                        beginAtZero: true
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     // Function to fetch sensor data and update the chart
@@ -123,5 +131,5 @@ $(document).ready(function () {
     // Fetch sensor data and update the chart every 5 seconds
     setInterval(() => {
         fetchDataAndUpdateChart();
-    }, 1000);
+    }, 3000);
 });
