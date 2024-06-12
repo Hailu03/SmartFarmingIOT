@@ -9,8 +9,8 @@ function generateRandomSensorData() {
     AirHumidity: getRandomInt(40, 60),      // Random air humidity between 40% and 60%
     SoilHumidity: getRandomInt(0, 100),     // Random soil humidity between 0% and 100%
     Luminosity: getRandomInt(0, 100),      // Random luminosity between 0 and 1000 lux
-    PHLevel: getRandomFloat(4, 8),          // Random pH level between 4 and 8
-    WindSpeed: getRandomFloat(0, 20)        // Random wind speed/direction between 0 and 10 (m/s)
+    PHLevel: getRandomInt(4, 8),          // Random pH level between 4 and 8
+    WindSpeed: getRandomInt(0, 20)        // Random wind speed/direction between 0 and 10 (m/s)
   };
 }
 
